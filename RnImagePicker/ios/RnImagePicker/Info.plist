@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone Usage</string>
 	<key>NSPhotoLibraryUsageDescription</key>
+	<string>PhotoLib Usage</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Usage</string>
+	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

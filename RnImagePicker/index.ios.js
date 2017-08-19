@@ -10,14 +10,19 @@ import {
   StyleSheet,
   Button,
   Text,
+  Image,
   View
 } from 'react-native';
 
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker1 from 'react-native-image-picker';
+import ImagePicker2 from 'react-native-image-crop-picker';
 
 export default class RnImagePicker extends Component {
+  state = {
+    images: []
+  };
 
-  _onPress = e => {
+  _onPress1 = e => {
     var options = {
       title: 'Select Avatar',
       customButtons: [
@@ -29,10 +34,10 @@ export default class RnImagePicker extends Component {
       }
     };
     // Open Image Library:
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker1.showImagePicker(options, (response) => {
       console.log('Response = ', response);
 
-      alert('response?')
+      alert(JSON.stringify(response))
     
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -56,16 +61,38 @@ export default class RnImagePicker extends Component {
     });
   };
 
+  _onPress2 = e => {
+    ImagePicker2.openPicker({
+      width: 300,
+      height: 400,
+      maxFiles:3,
+      multiple:true,
+      cropping: true
+    }).then(image => {
+      this.setState({
+        images: image
+      })
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
-        <Button title="SHOW PICKER" onPress={this._onPress} />
+        <Button title="SHOW PICKER[Normal]" onPress={this._onPress1} />
+        <Button title="SHOW PICKER[Crop]" onPress={this._onPress2} />
         <Text style={styles.instructions}>
-          To get started, edit index.ios.js
+          { JSON.stringify(this.state.images, null,4 )}
         </Text>
+        {
+          this.state.images.map((item,index)=>{
+            return (
+              <Image key={index} source={ require(item.sourceURL) } />
+            )
+          })
+        }
         <Text style={styles.instructions}>
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu

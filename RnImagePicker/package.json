@@ -10,6 +10,7 @@
     "babel-preset-react-native": "2.1.0",
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.1",
+    "react-native-image-crop-picker": "^0.15.1",
     "react-native-image-picker": "^0.26.4"
   },
   "devDependencies": {
