@@ -67,7 +67,7 @@ export default class RnImagePicker extends Component {
     ImagePicker2.openPicker({
       width: 300,
       height: 400,
-      maxFiles:3,
+      maxFiles:8,
       multiple:true,
       cropping: true
     }).then(image => {
@@ -115,12 +115,12 @@ export default class RnImagePicker extends Component {
         <Button title="SHOW PICKER[Normal]" onPress={this._onPress1} />
         <Button title="SHOW PICKER[Crop]" onPress={this._onPress2} />
         <Button title="SHOW PICKER[CameraRoll]" onPress={this._onPress3} />
-        <Text style={styles.instructions}>
-          { JSON.stringify(this.state.images, null,4 )}
-        </Text>
         <View style={styles.imageGrid}>
-          { this.state.images.map((image,key) => <Image key={key} style={styles.image} source={{ uri: image.uri }} />) }
+          { this.state.images.map((image,key) => <Image key={key} style={styles.image} source={{ uri: image.path }} />) }
         </View>
+        <Text style={styles.instructions}>
+          { JSON.stringify(this.state.images)}
+        </Text>
         <Text style={styles.instructions}>
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center'
+    justifyContent: 'space-between'
   },
   image: {
     width: 100,
@@ -147,11 +147,9 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 20,
-    textAlign: 'center',
     margin: 10,
   },
   instructions: {
-    textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
   },
