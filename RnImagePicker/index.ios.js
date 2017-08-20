@@ -11,6 +11,8 @@ import {
   Button,
   Text,
   Image,
+  CameraRoll,
+  ScrollView,
   View
 } from 'react-native';
 
@@ -73,41 +75,75 @@ export default class RnImagePicker extends Component {
         images: image
       })
     });
+  };
+
+  /**
+   * @thanks to:
+   * https://stackoverflow.com/questions/34085656/cannot-access-cameraroll-undefined-is-not-an-objectevaluating-rctcamerarollma
+   */
+  _onPress3 = e => {
+    CameraRoll.getPhotos({
+        first: 25,
+        // assetType: 'Photos'
+    }).then((data) => {
+      const assets = data.edges;
+      const images = assets.map((asset) => asset.node.image);
+      this.setState({
+        images: images
+      });
+    }).catch(alert);
+  };
+
+  storeImages(data) {
+    const assets = data.edges;
+    const images = assets.map((asset) => asset.node.image);
+    this.setState({
+      images: images
+    });
+  }
+
+  logImageError(err) {
+    console.log(err);
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
         <Button title="SHOW PICKER[Normal]" onPress={this._onPress1} />
         <Button title="SHOW PICKER[Crop]" onPress={this._onPress2} />
+        <Button title="SHOW PICKER[CameraRoll]" onPress={this._onPress3} />
         <Text style={styles.instructions}>
           { JSON.stringify(this.state.images, null,4 )}
         </Text>
-        {
-          this.state.images.map((item,index)=>{
-            return (
-              <Image key={index} source={ require(item.sourceURL) } />
-            )
-          })
-        }
+        <View style={styles.imageGrid}>
+          { this.state.images.map((image,key) => <Image key={key} style={styles.image} source={{ uri: image.uri }} />) }
+        </View>
         <Text style={styles.instructions}>
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  imageGrid: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+  },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 10,
   },
   welcome: {
     fontSize: 20,
